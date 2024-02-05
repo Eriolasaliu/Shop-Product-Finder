@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+h1 {
+    color: #8a1b1b;
+    margin-bottom: 20px;
+}
+
+form {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-width: 80%;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+a {
+    color: #8a1b1b;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+    </style>
+    <title>Add Shop</title>
+</head>
+<body>
+    <h1>Add Shop</h1>
+
+    <form method="POST" action="{{ url_for('admin_add_shop') }}">
+        <label for="shop_name">Shop Name:</label>
+        <input type="text" name="shop_name" required>
+
+        <label for="shop_image_url">Shop Image URL:</label>
+        <input type="text" name="shop_image_url" required>
+
+        <label for="shop_location">Shop Location:</label>
+        <input type="text" name="shop_location" required>
+
+        <button type="submit">Add Shop</button>
+    </form>
+
+    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+            text-align: center;
+        }
+
+        /* Navigation Bar Styles */
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        /* Logout Button Styles */
+        .logout-btn {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #dc3545;
+        }
+
+        /* Shop Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #8a1b1b;
+            color: white;
+        }
+
+        /* View Products Button Styles */
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Products Table Styles */
+        .products-table {
+            display: none;
+            background-color: #f8f9fa;
+        }
+
+        .shop-image {
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            .shop-image {
+                max-width: 60px;
+                max-height: 60px;
+            }
+        }
+    </style>
+    <title>Customer Product List</title>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+        <a href="{{ url_for('contact') }}">Contact Us</a>
+        <a href="{{ url_for('customer_product_list') }}">Product List</a>
+        <a class="logout-btn" href="{{ url_for('customer_logout') }}">Logout</a>
+    </nav>
+
+    <h1>Customer Product List</h1>
+    <!-- Displaying Shop Data -->
+    <h2>Shops</h2>
+    <table>
+        <thead>
+            <tr> 
+                <th>Shop Image</th> <!-- New column for Shop Image -->
+                {% for column in shops_columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+                <th>Products</th> <!-- Added for View Products button -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for shop in shops_data %}
+                <tr>
+                    <td><img src="{{ url_for('static', filename=shop.2.replace('%5C', '/')) }}" alt="Shop Image" class="shop-image"></td>
+                    {% for value in shop %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                    <td>
+                        <button onclick="toggleProductsTable('products_table_{{ shop.0 }}')">View Products</button>
+                    </td>
+                </tr>
+                <tr class="products-table" id="products_table_{{ shop.0 }}">
+                    <td colspan="{{ shops_columns|length + 1 }}">
+                        <!-- Display Products for the Shop -->
+                        <h3>Products for {{ shop.1 }}</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    {% for column in products_columns %}
+                                        <th>{{ column }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products_data %}
+                                    {% if product[-1] == shop.0 %}
+                                        <tr>
+                                            {% for value in product %}
+                                                <td>{{ value }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        function toggleProductsTable(tableId) {
+            var table = document.getElementById(tableId);
+            if (table.style.display === 'table') {
+                table.style.display = 'none';
+            } else {
+                table.style.display = 'table';
+            }
+        }
+    </script>
+</body>
+
+</html>
